@@ -48,3 +48,28 @@ func TestDeliveredBidTrace(t *testing.T) {
 		})
 	}
 }
+
+func TestDeliveredBulkBidTrace(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{
+			name: "Good",
+		},
+	}
+
+	service, err := http.New(context.Background(),
+		http.WithTimeout(timeout),
+		http.WithAddress(os.Getenv("HTTP_ADDRESS")),
+	)
+	require.NoError(t, err)
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			bidTrace, err := service.(client.DeliveredBidTraceProvider).DeliveredBulkBidTrace(context.Background(), 4700906, 32)
+			require.NoError(t, err)
+			require.NotNil(t, bidTrace)
+			fmt.Printf("%+v\n", bidTrace)
+		})
+	}
+}
